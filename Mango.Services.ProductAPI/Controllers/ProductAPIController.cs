@@ -24,10 +24,10 @@ namespace Mango.Services.ProductAPI.Controllers
             {
                 IEnumerable<ProductDto> productDtos = await _productRepository.GetProducts();
                 _response.Result = productDtos;
-                _response.IsSuccess = true;
             }
             catch (Exception ex)
             {
+                _response.IsSuccess = false;
                 _response.ErrorMessages
                     = new List<string>() { ex.ToString() };
             }
@@ -42,10 +42,10 @@ namespace Mango.Services.ProductAPI.Controllers
             {
                 ProductDto productDto = await _productRepository.GetProductById(id);
                 _response.Result = productDto;
-                _response.IsSuccess = true;
             }
             catch (Exception ex)
             {
+                _response.IsSuccess = false;
                 _response.ErrorMessages
                     = new List<string>() { ex.ToString() };
             }
@@ -59,10 +59,10 @@ namespace Mango.Services.ProductAPI.Controllers
             {
                 ProductDto model = await _productRepository.CreateUpdateProduct(productDto);
                 _response.Result = model;
-                _response.IsSuccess = true;
             }
             catch (Exception ex)
             {
+                _response.IsSuccess = false;
                 _response.ErrorMessages
                     = new List<string>() { ex.ToString() };
             }
@@ -76,10 +76,10 @@ namespace Mango.Services.ProductAPI.Controllers
             {
                 ProductDto model = await _productRepository.CreateUpdateProduct(productDto);
                 _response.Result = model;
-                _response.IsSuccess = true;
             }
             catch (Exception ex)
             {
+                _response.IsSuccess = false;
                 _response.ErrorMessages
                     = new List<string>() { ex.ToString() };
             }
@@ -93,10 +93,10 @@ namespace Mango.Services.ProductAPI.Controllers
             {
                 bool isDeleted = await _productRepository.DeleteProduct(id);
                 _response.Result = isDeleted;
-                _response.IsSuccess = true;
             }
             catch (Exception ex)
             {
+                _response.IsSuccess = false;
                 _response.ErrorMessages
                     = new List<string>() { ex.ToString() };
             }
