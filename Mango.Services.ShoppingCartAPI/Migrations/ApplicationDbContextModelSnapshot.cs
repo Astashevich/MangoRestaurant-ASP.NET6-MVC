@@ -56,16 +56,14 @@ namespace Mango.Services.ShoppingCartAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartHeaderId"), 1L, 1);
 
                     b.Property<string>("CouponCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CartHeaderId");
 
-                    b.ToTable("CartHeader");
+                    b.ToTable("CartHeaders");
                 });
 
             modelBuilder.Entity("Mango.Services.ShoppingCartAPI.Models.Product", b =>
