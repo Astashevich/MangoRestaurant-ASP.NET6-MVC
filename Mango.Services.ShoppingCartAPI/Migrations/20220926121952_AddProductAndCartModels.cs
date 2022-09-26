@@ -9,7 +9,7 @@ namespace Mango.Services.ShoppingCartAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CartHeader",
+                name: "CartHeaders",
                 columns: table => new
                 {
                     CartHeaderId = table.Column<int>(type: "int", nullable: false)
@@ -19,7 +19,7 @@ namespace Mango.Services.ShoppingCartAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartHeader", x => x.CartHeaderId);
+                    table.PrimaryKey("PK_CartHeaders", x => x.CartHeaderId);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,7 +82,7 @@ namespace Mango.Services.ShoppingCartAPI.Migrations
                 name: "CartDetails");
 
             migrationBuilder.DropTable(
-                name: "CartHeader");
+                name: "CartHeaders");
 
             migrationBuilder.DropTable(
                 name: "Products");

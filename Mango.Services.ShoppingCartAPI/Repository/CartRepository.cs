@@ -19,7 +19,15 @@ namespace Mango.Services.ShoppingCartAPI.Repository
 
         public async Task<CartDto> GetCartByUserId(string userId)
         {
-            throw new NotImplementedException();
+            Cart cart = new()
+            {
+                CartHeader = await _context.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId)
+            };
+
+            cart.CartDetails = _context.CartDetails.Where(u => u.CartHeaderId == cart.CartHeader.CartHeaderId)
+                .Include(u => u.Product);
+
+            return _mapper.Map<CartDto>(cart);
         }
 
         public async Task<CartDto> CreateUpdateCart(CartDto cartDto)
@@ -36,11 +44,11 @@ namespace Mango.Services.ShoppingCartAPI.Repository
             }
 
             //Check if header is null, if null create header and details.
-            var cartHeaderFromDb = await _context.CartHeader.AsNoTracking().FirstOrDefaultAsync(
+            var cartHeaderFromDb = await _context.CartHeaders.AsNoTracking().FirstOrDefaultAsync(
                 u =>u.UserId == cart.CartHeader.UserId);
             if (cartHeaderFromDb == null)
             {
-                _context.CartHeader.Add(cart.CartHeader);
+                _context.CartHeaders.Add(cart.CartHeader);
                 await _context.SaveChangesAsync();
                 cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.CartHeaderId;
                 cart.CartDetails.FirstOrDefault().Product = null;
@@ -76,12 +84,44 @@ namespace Mango.Services.ShoppingCartAPI.Repository
 
         public async Task<bool> RemoveFromCart(int cartDetailsId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                CartDetails cartDetails = await _context.CartDetails.FirstOrDefaultAsync(
+                                u => u.CartDetailsId == cartDetailsId);
+
+                int totalCountCartItems = _context.CartDetails.Where(
+                    u => u.CartHeaderId == cartDetails.CartHeaderId).Count();
+
+                _context.CartDetails.Remove(cartDetails);
+                if (totalCountCartItems == 1)
+                {
+                    var cartHeaderToRemove = await _context.CartHeaders.FirstOrDefaultAsync(
+                        u => u.CartHeaderId == cartDetails.CartHeaderId);
+
+                    _context.CartHeaders.Remove(cartHeaderToRemove);
+                }
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> ClearCart(string userId)
         {
-            throw new NotImplementedException();
+            var cartHeaderFromDb = await _context.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (cartHeaderFromDb != null)
+            {
+                _context.CartDetails.RemoveRange(
+                    _context.CartDetails.Where(
+                        u => u.CartHeaderId == cartHeaderFromDb.CartHeaderId));
+                _context.CartHeaders.Remove(cartHeaderFromDb);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }
