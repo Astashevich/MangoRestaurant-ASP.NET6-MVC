@@ -17,7 +17,7 @@ namespace Mango.Web.Services
             return await SendAsync<T>(new ApiRequest()
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.ShoppingCartAPIBase + "api/products/GetCart/" + userId,
+                Url = SD.ShoppingCartAPIBase + "api/cart/GetCart/" + userId,
                 AccessToken = token
             });
         }
