@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Mango.Services.ProductAPI.Models.Dto
+namespace Mango.Services.ShoppingCartAPI.Models
 {
     public class Product
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ProductId { get; set; }
         [Required]
         public string Name { get; set; }
