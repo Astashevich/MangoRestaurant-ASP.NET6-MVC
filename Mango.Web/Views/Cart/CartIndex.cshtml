@@ -77,7 +77,11 @@
                             }
                         </div>
                         <div class="col-6 text-end">
-                            <span class="text-danger" style="font-size:21px;">  Order Total : @((Model.CartHeader.OrderTotal).ToString("c", System.Globalization.CultureInfo.GetCultureInfo("en-us"))) <br /></span>
+                            <span class="text-danger" style="font-size:21px;">  Order Total: @((Model.CartHeader.OrderTotal).ToString("c", System.Globalization.CultureInfo.GetCultureInfo("en-us"))) <br /></span>
+                            @if(Model.CartHeader.DiscountTotal>0) 
+                            {
+                                <span class="text-success"> Order Discount: @((Model.CartHeader.DiscountTotal).ToString("c", System.Globalization.CultureInfo.GetCultureInfo("en-us")))</span>
+                            }
                         </div>
                     </div>
                 </div>

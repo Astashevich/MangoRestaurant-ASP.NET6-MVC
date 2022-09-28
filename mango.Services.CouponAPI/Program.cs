@@ -1,4 +1,5 @@
 using AutoMapper;
+using mango.Services.CouponAPI.Repository;
 using Mango.Services.CouponAPI;
 using Mango.Services.CouponAPI.DbContexts;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-//builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
