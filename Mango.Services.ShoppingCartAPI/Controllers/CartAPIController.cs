@@ -128,5 +128,21 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             }
             return _response;
         }
+
+        [HttpPost("Checkout")]
+        public async Task<object> Checkout()
+        {
+            try
+            {
+                bool isSuccess = await _cartRepository.RemoveCoupon(userId);
+                _response.Result = isSuccess;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
     }
 }
