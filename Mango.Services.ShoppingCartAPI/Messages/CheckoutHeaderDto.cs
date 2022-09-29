@@ -18,6 +18,6 @@ namespace Mango.Services.ShoppingCartAPI.Messages
         public string CVV { get; set; }
         public string ExpiryMonthYear { get; set; }
         public int CartTotalItems { get; set; }
-        public IEnumerable<CartDetailsDto> CartDetails { get; set; }
+        public IEnumerable<CartDetailsDto>? CartDetails { get; set; }
     }
 }
