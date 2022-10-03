@@ -113,7 +113,7 @@ namespace Mango.Services.OrderAPI.Messaging
             }
             catch(Exception ex)
             {
-                throw
+                throw;
             }
         }
     }
