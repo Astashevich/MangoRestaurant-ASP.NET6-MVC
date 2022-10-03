@@ -2,7 +2,6 @@
 using Mango.Services.OrderAPI.Messages;
 using Mango.Services.OrderAPI.Models;
 using Mango.Services.OrderAPI.Repository;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -12,8 +11,10 @@ namespace Mango.Services.OrderAPI.Messaging
     {
         private readonly OrderRepository _orderRepository;
         private readonly string serviceBusConnectionString;
-        private readonly string subscriptionName;
+        private readonly string subscriptionNameCheckOut;
         private readonly string checkoutMessageTopic;
+
+        private ServiceBusProcessor checkOutProcessor;
 
         private readonly IConfiguration _configuration;
 
@@ -23,8 +24,31 @@ namespace Mango.Services.OrderAPI.Messaging
             _configuration = configuration;
 
             serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
-            subscriptionName = _configuration.GetValue<string>("SubscriptionName");
+            subscriptionNameCheckOut = _configuration.GetValue<string>("SubscriptionNameCheckOut");
             checkoutMessageTopic = _configuration.GetValue<string>("CheckoutMessageTopic");
+
+            var client = new ServiceBusClient(serviceBusConnectionString);
+
+            checkOutProcessor = client.CreateProcessor(checkoutMessageTopic, subscriptionNameCheckOut);
+        }
+
+        public async Task Start()
+        {
+            checkOutProcessor.ProcessMessageAsync += OnCheckoutMessageReceived;
+            checkOutProcessor.ProcessErrorAsync += ErrorHandler;
+            await checkOutProcessor.StartProcessingAsync();
+        }
+
+        public async Task Stop()
+        {
+            await checkOutProcessor.StopProcessingAsync();
+            await checkOutProcessor.DisposeAsync();
+        }
+
+        private Task ErrorHandler(ProcessErrorEventArgs args)
+        {
+            Console.WriteLine(args.Exception.ToString());
+            return Task.CompletedTask;
         }
 
         private async Task OnCheckoutMessageReceived(ProcessMessageEventArgs args)
