@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Mango.Services.OrderAPI.Messaging
 {
-    public class AzureServiceBusConsumer
+    public class AzureServiceBusConsumer :IAzureServiceBusConsumer
     {
         private readonly OrderRepository _orderRepository;
         private readonly string serviceBusConnectionString;
