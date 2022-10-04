@@ -18,7 +18,7 @@ namespace Mango.Services.Email.Messaging
 
         private readonly IConfiguration _configuration;
 
-        public AzureServiceBusConsumer(EmailRepository orderRepository, IConfiguration configuration, IMessageBus messageBus)
+        public AzureServiceBusConsumer(EmailRepository orderRepository, IConfiguration configuration)
         {
             _emailRepository = orderRepository;
             _configuration = configuration;
