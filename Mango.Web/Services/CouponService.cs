@@ -17,7 +17,7 @@ namespace Mango.Web.Services
             return await SendAsync<T>(new ApiRequest()
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.CouponAPIBase + "api/coupon/" + couponCode,
+                Url = SD.CouponAPIBase + "/api/coupon/" + couponCode,
                 AccessToken = token
             });
         }
